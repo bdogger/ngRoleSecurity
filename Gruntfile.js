@@ -31,7 +31,7 @@ module.exports = function (grunt) {
             all: {
                 src: [
                     'Gruntfile.js',
-                    'ngOAuth2Utils.js'
+                    'ng-role-security.js'
                 ]
             },
             test: {
