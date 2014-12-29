@@ -9,7 +9,7 @@ Once your user is authenticated/logged in, you can use this module to protect an
 
 To install this component into your project
 
-    bower install ngRoleSecurity
+    bower install ng-role-security
 
  #General Usage#
  Add a securityConfig constant with the following values:
