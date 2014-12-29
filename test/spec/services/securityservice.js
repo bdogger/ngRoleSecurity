@@ -84,4 +84,12 @@ describe('Service: $securityService', function () {
 
         expect($securityService.hasPermission('ADMIN')).toBeFalsy();
     });
+
+    it('expects reset() to clear out any saved roles', function(){
+        $localStorage.authorities = ['ADMIN'];
+
+        $securityService.reset();
+
+        expect($localStorage.authorities.length).toBe(0);
+    });
 });

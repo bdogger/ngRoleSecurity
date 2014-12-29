@@ -37,6 +37,9 @@
                     });
 
                     return permission;
+                },
+                reset: function() {
+                    $localStorage.authorities = [];
                 }
             };
         })
