@@ -38,20 +38,29 @@
 
                     return permission;
                 },
-                reset: function() {
+                reset: function () {
                     $localStorage.authorities = [];
                 }
             };
         })
 
-        .directive('requireRole', function ($securityService) {
+        .directive('requireRole', function ($securityService, $localStorage) {
+
+            function applySecurity(element, attrs, $securityService) {
+                var roles = attrs.requireRole;
+                if ($securityService.hasPermission(roles.split(','))) {
+                    element.removeClass('hidden');
+                } else {
+                    element.addClass('hidden');
+                }
+            }
             return {
                 restrict: 'A',
                 link: function (scope, element, attrs) {
-                    var roles = attrs.requireRole;
-                    if (!$securityService.hasPermission(roles.split(','))) {
-                        element.addClass('hidden');
-                    }
+                    applySecurity(element, attrs, $securityService);
+                    scope.$watch(function () {
+                        return $localStorage.authorities;
+                    }, applySecurity(element, attrs, $securityService));
                 }
             };
         })

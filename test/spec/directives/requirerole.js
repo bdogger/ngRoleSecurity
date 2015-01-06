@@ -51,4 +51,5 @@ describe('Directive: requireRole', function () {
         $rootScope.$digest();
         expect(element.hasClass('hidden')).toBeFalsy();
     });
+
 });
