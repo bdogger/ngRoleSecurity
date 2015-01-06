@@ -44,7 +44,7 @@
             };
         })
 
-        .directive('requireRole', function ($securityService, $localStorage) {
+        .directive('requireRole', function ($securityService) {
 
             function applySecurity(element, attrs, $securityService) {
                 var roles = attrs.requireRole;
@@ -59,7 +59,7 @@
                 link: function (scope, element, attrs) {
                     applySecurity(element, attrs, $securityService);
                     scope.$watch(function () {
-                        return $localStorage.authorities;
+                        return $securityService.getAuthorities();
                     }, applySecurity(element, attrs, $securityService));
                 }
             };
