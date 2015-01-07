@@ -11,19 +11,33 @@ To install this component into your project
 
     bower install ng-role-security
 
- #General Usage#
- Add a securityConfig constant with the following values:
+To save it as a bower dependency
 
-    angular.module('yourAngularModule', ['ngRoleSecurity'])
-        .constant('securityConfig', {
-            'authoritiesUrl': 'http://localhost/me/authorities',
-            'forbiddenRoute' : '/access-denied'
+    bower install ng-role-security --save
+
+##General Usage##
+Add ngRoleSecurity as a dependency to your angular app
+
+   angular.module('yourAngularModule',  ['ngOAuth2Utils'])
+
+Configure the securityConfig object in a config block
+
+    angular.module('yourAngularModule',  ['ngOAuth2Utils'])
+        .config(function(securityConfig) {
+            securityConfig.authoritiesUrl = 'http://www.mywebsite/me/authorities';
+            securityConfig.forbiddenRoute = '/access-denied';
         });
+
+##Configuration Values##
+*authoritiesUrl:* the url that will return an array of role names
+*forbiddenRoute:* the angular route that the user will be taken to if they try to access a route without the proper authority
 
 #Initializing Authorities#
 Once your user has logged in, use the $securityService to load the user's roles.
 
     $securityService.getRemoteAuthorities();
+
+There is a watch in the requireRole directive which will automatically hide or display UI elements when the authorities have been retrieved.
 
 #Securing Routes#
 If you want to secure a route, add the following access restrictions:
@@ -44,7 +58,9 @@ If you want to secure a route, add the following access restrictions:
 
 You do not need to secure all routes, as you can see above.
 
-If a user does not have the required role, then he or she will be redirected to the specified 403 routes.
+If a user does not have the required role, then he or she will be redirected to the specified 403 route (securityConfig.forbiddenRoute).
+
+Currently, the module is configured so that the user the user will have access if he or she has any of the allowedRoles.
 
 #Securing UI elements#
 You can hide elements by using the require-role directive

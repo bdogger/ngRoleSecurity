@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('testSecurityService', ['ngRoleSecurity', 'ngRoute',])
-    .config(function ($routeProvider) {
+    .config(function ($routeProvider, securityConfig) {
         $routeProvider
             .when('/secured-admin', {
                 template: '<div>Admins Only</div>',
@@ -10,10 +10,8 @@ angular.module('testSecurityService', ['ngRoleSecurity', 'ngRoute',])
             .when('/unsecured', {
                 template: '<div>no security</div>'
             });
-    })
-    .constant('securityConfig', {
-        'authoritiesUrl': 'http://localhost/me/authorities',
-        'forbiddenRoute' : '/access-denied'
+        securityConfig.authoritiesUrl = 'http://localhost/me/authorities';
+        securityConfig.forbiddenRoute = '/access-denied';
     });
 
 describe('Service: $securityService', function () {
@@ -73,7 +71,7 @@ describe('Service: $securityService', function () {
         expect($securityService.hasPermission('ADMIN')).toBeTruthy();
     });
 
-    it ('expects hasPermission() to return true if user has one of authorities provided', function(){
+    it('expects hasPermission() to return true if user has one of authorities provided', function () {
         $localStorage.authorities = ['ADMIN'];
 
         expect($securityService.hasPermission(['ADMIN', 'EMPLOYEE'])).toBeTruthy();
@@ -85,7 +83,7 @@ describe('Service: $securityService', function () {
         expect($securityService.hasPermission('ADMIN')).toBeFalsy();
     });
 
-    it('expects reset() to clear out any saved roles', function(){
+    it('expects reset() to clear out any saved roles', function () {
         $localStorage.authorities = ['ADMIN'];
 
         $securityService.reset();

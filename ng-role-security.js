@@ -3,15 +3,18 @@
 (function () {
     angular.module('ngRoleSecurity', ['ngRoute', 'ngStorage'])
 
+        .constant('securityConfig', {
+            authoritiesUrl: '',
+            forbiddenRoute: ''
+        })
+
         .factory('$securityService', function $securityService($localStorage, $http, securityConfig) {
             return {
                 getRemoteAuthorities: function () {
-                    if (typeof securityConfig.authoritiesUrl !== 'undefined' && securityConfig.authoritiesUrl != null) {
-                        return $http.get(securityConfig.authoritiesUrl)
-                            .success(function (authorities) {
-                                $localStorage.authorities = authorities;
-                            });
-                    }
+                    return $http.get(securityConfig.authoritiesUrl)
+                        .success(function (authorities) {
+                            $localStorage.authorities = authorities;
+                        });
                 },
                 getAuthorities: function () {
                     var authorities = [];
@@ -54,6 +57,7 @@
                     element.addClass('hidden');
                 }
             }
+
             return {
                 restrict: 'A',
                 link: function (scope, element, attrs) {

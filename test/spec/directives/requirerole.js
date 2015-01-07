@@ -1,8 +1,8 @@
 'use strict';
 
 
-angular.module('testSecurityService', ['ngRoleSecurity', 'ngRoute',])
-    .config(function ($routeProvider) {
+angular.module('testSecurityService', ['ngRoleSecurity', 'ngRoute'])
+    .config(function ($routeProvider, securityConfig) {
         $routeProvider
             .when('/secured-admin', {
                 template: '<div>Admins Only</div>',
@@ -11,11 +11,10 @@ angular.module('testSecurityService', ['ngRoleSecurity', 'ngRoute',])
             .when('/unsecured', {
                 template: '<div>no security</div>'
             });
-    })
-    .constant('securityConfig', {
-        'authoritiesUrl': 'http://localhost/me/authorities',
-        'forbiddenRoute' : '/access-denied'
+        securityConfig.authoritiesUrl = 'http://localhost/me/authorities';
+        securityConfig.forbiddenRoute ='/access-denied';
     });
+
 describe('Directive: requireRole', function () {
 
     // load the directive's module
