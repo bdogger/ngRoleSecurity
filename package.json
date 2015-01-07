@@ -1,6 +1,6 @@
 {
   "name": "ngRoleSecurity",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Service and Directives for role based security in Angular",
   "main": "ng-role-security.js",
   "scripts": {
