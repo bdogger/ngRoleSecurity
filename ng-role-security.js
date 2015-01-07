@@ -62,9 +62,6 @@
                 restrict: 'A',
                 link: function (scope, element, attrs) {
                     applySecurity(element, attrs, $securityService);
-                    scope.$watch(function () {
-                        return $securityService.getAuthorities();
-                    }, applySecurity(element, attrs, $securityService));
                 }
             };
         })
