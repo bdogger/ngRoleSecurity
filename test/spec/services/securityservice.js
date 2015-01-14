@@ -44,6 +44,22 @@ describe('Service: $securityService', function () {
         expect($localStorage.authorities[1]).toBe('MANAGER');
     });
 
+    it('expects getRemoteAuthorities to call the callback function', function () {
+        var count = 0;
+
+        $httpBackend.expectGET(
+            'http://localhost/me/authorities'
+        )
+            .respond(['EMPLOYEE', 'MANAGER']);
+
+        $securityService.getRemoteAuthorities(function () {
+            count++
+        });
+
+        $httpBackend.flush();
+        expect(count).toBe(1);
+    });
+
     it('expects getRemoteAuthorities() to do nothing when authoritiesUrl not present', function () {
         securityConfig.authoritiesUrl = null;
         $securityService.getRemoteAuthorities();

@@ -10,10 +10,14 @@
 
         .factory('$securityService', function $securityService($localStorage, $http, securityConfig) {
             return {
-                getRemoteAuthorities: function () {
+                getRemoteAuthorities: function (callBackFunction) {
                     return $http.get(securityConfig.authoritiesUrl)
                         .success(function (authorities) {
                             $localStorage.authorities = authorities;
+
+                            if (callBackFunction) {
+                                callBackFunction();
+                            }
                         });
                 },
                 getAuthorities: function () {

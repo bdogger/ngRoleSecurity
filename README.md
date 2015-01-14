@@ -37,7 +37,16 @@ Once your user has logged in, use the $securityService to load the user's roles.
 
     $securityService.getRemoteAuthorities();
 
-There is a watch in the requireRole directive which will automatically hide or display UI elements when the authorities have been retrieved.
+getRemoteAuthorities also accepts a callback function in case you want to wait until these values are initialized
+
+        loginService.login(loginDetails.username, loginDetails.password)
+            .success(
+                function () {
+                    $securityService.getRemoteAuthorities(
+                        function() {
+                            $location.path('/main');
+                    });
+            });
 
 #Securing Routes#
 If you want to secure a route, add the following access restrictions:
