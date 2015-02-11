@@ -53,7 +53,7 @@ describe('Service: $securityService', function () {
             .respond(['EMPLOYEE', 'MANAGER']);
 
         $securityService.getRemoteAuthorities(function () {
-            count++
+            count++;
         });
 
         $httpBackend.flush();

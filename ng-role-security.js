@@ -5,7 +5,8 @@
 
         .constant('securityConfig', {
             authoritiesUrl: '',
-            forbiddenRoute: ''
+            forbiddenRoute: '',
+            authorities: []
         })
 
         .factory('$securityService', function $securityService($localStorage, $http, securityConfig) {
@@ -14,7 +15,7 @@
                     return $http.get(securityConfig.authoritiesUrl)
                         .success(function (authorities) {
                             $localStorage.authorities = authorities;
-
+                            securityConfig.authorities = authorities;
                             if (callBackFunction) {
                                 callBackFunction();
                             }
@@ -51,9 +52,9 @@
             };
         })
 
-        .directive('requireRole', function ($securityService) {
+        .directive('requireRole', function ($securityService, securityConfig) {
 
-            function applySecurity(element, attrs, $securityService) {
+            function applySecurity(element, attrs) {
                 var roles = attrs.requireRole;
                 if ($securityService.hasPermission(roles.split(','))) {
                     element.removeClass('hidden');
@@ -65,12 +66,18 @@
             return {
                 restrict: 'A',
                 link: function (scope, element, attrs) {
-                    applySecurity(element, attrs, $securityService);
+                    applySecurity(element, attrs);
+                    scope.$watch(function () {
+                        return securityConfig.authorities;
+                    }, function () {
+                        applySecurity(element, attrs);
+                    });
                 }
             };
         })
 
         .run(function ($location, $rootScope, $securityService, securityConfig) {
+            securityConfig.authorities = $securityService.getAuthorities();
             $rootScope.$on('$routeChangeStart', function (event, next) {
                 if (typeof  next.requiredRole !== 'undefined') {
                     if (!$securityService.hasPermission(next.requiredRole)) {
