@@ -53,24 +53,18 @@
         })
 
         .directive('requireRole', function ($securityService, securityConfig) {
-
-            function applySecurity(element, attrs) {
-                var roles = attrs.requireRole;
-                if ($securityService.hasPermission(roles.split(','))) {
-                    element.removeClass('hidden');
-                } else {
-                    element.addClass('hidden');
-                }
-            }
-
             return {
                 restrict: 'A',
                 link: function (scope, element, attrs) {
-                    applySecurity(element, attrs);
                     scope.$watch(function () {
                         return securityConfig.authorities;
                     }, function () {
-                        applySecurity(element, attrs);
+                        var roles = attrs.requireRole;
+                        if ($securityService.hasPermission(roles.split(','))) {
+                            element.removeClass('hidden');
+                        } else {
+                            element.addClass('hidden');
+                        }
                     });
                 }
             };
