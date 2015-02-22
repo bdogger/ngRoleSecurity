@@ -26,11 +26,13 @@ Configure the securityConfig object in a config block
         .config(function(securityConfig) {
             securityConfig.authoritiesUrl = 'http://www.mywebsite/me/authorities';
             securityConfig.forbiddenRoute = '/access-denied';
+            securityConfig.storageType = 'session';
         });
 
 ##Configuration Values##
 *authoritiesUrl:* the url that will return an array of role names
 *forbiddenRoute:* the angular route that the user will be taken to if they try to access a route without the proper authority
+*storageType:* 'session' or 'local' for session storage or local storage, session being the default and more secure option
 
 #Initializing Authorities#
 Once your user has logged in, use the $securityService to load the user's roles.

@@ -21,13 +21,13 @@ describe('run: $locationChangeStart', function () {
     beforeEach(module('testSecurityService'));
 
     // instantiate service
-    var $securityService, $localStorage, $location, $rootScope, securityConfig;
+    var $securityService, $sessionStorage, $location, $rootScope, securityConfig;
 
-    beforeEach(inject(function (_$location_, _$localStorage_, _$securityService_, _$rootScope_, _$route_, _securityConfig_) {
+    beforeEach(inject(function (_$location_, _$sessionStorage_, _$securityService_, _$rootScope_, _$route_, _securityConfig_) {
         $securityService = _$securityService_;
         $location = _$location_;
         securityConfig = _securityConfig_;
-        $localStorage = _$localStorage_;
+        $sessionStorage = _$sessionStorage_;
         $rootScope = _$rootScope_;
     }));
 
@@ -41,7 +41,7 @@ describe('run: $locationChangeStart', function () {
     });
 
     it('expects the route to change to permission denied when the user does not have required permission', function() {
-        $localStorage.authorities = [];
+        $sessionStorage.authorities = [];
 
         $rootScope.$broadcast('$routeChangeStart', {originalPath: '/secured-admin', requiredRole: ['ADMIN']});
 
@@ -49,7 +49,7 @@ describe('run: $locationChangeStart', function () {
     });
 
     it('expects the route to change to not change when the user does the required permission', function() {
-        $localStorage.authorities = ['ADMIN'];
+        $sessionStorage.authorities = ['ADMIN'];
 
         $rootScope.$broadcast('$routeChangeStart', {originalPath: '/secured-admin', requiredRole: ['ADMIN']});
 

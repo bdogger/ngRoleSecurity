@@ -25,8 +25,7 @@ module.exports = function (config) {
             'bower_components/angular-sanitize/angular-sanitize.js',
             'bower_components/angular-touch/angular-touch.js',
             'bower_components/ngstorage/ngStorage.js',
-            'ng-role-security.js',
-            'test/security-config-test.js',
+            'src/**/*.js',
             'test/spec/**/*.js'
         ],
 
