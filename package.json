@@ -1,6 +1,6 @@
 {
   "name": "ngRoleSecurity",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "description": "Service and Directives for role based security in Angular",
   "main": "ng-role-security.js",
   "min": "ng-role-security.min.js",

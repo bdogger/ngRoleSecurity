@@ -36,6 +36,7 @@ describe('run: $locationChangeStart', function () {
         $location.path('/unsecured');
 
         $rootScope.$broadcast('$routeChangeStart', {originalPath: '/secured-admin'});
+        $rootScope.$digest();
 
         expect($location.path()).toBe('/unsecured');
     });
@@ -44,6 +45,7 @@ describe('run: $locationChangeStart', function () {
         $sessionStorage.authorities = [];
 
         $rootScope.$broadcast('$routeChangeStart', {originalPath: '/secured-admin', requiredRole: ['ADMIN']});
+        $rootScope.$digest();
 
         expect($location.path()).toBe('/access-denied');
     });
@@ -52,6 +54,7 @@ describe('run: $locationChangeStart', function () {
         $sessionStorage.authorities = ['ADMIN'];
 
         $rootScope.$broadcast('$routeChangeStart', {originalPath: '/secured-admin', requiredRole: ['ADMIN']});
+        $rootScope.$digest();
 
         expect($location.path()).toBe('/secured-admin');
     });
