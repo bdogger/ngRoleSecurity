@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/blairmotchan/ngRoleSecurity.svg)](https://travis-ci.org/blairmotchan/ngRoleSecurity)
+
 ngRoleSecurity
 ==============
 
