@@ -19,7 +19,11 @@ angular.module('ngRoleSecurity', ['ngRoute', 'ngStorage'])
                 var path = $securityService.hasPermission(next.requiredRole) ? next.originalPath : securityConfig.forbiddenRoute;
 
                 $rootScope.$evalAsync(function () {
-                    $location.path(path);
+                    var nPath = path;
+                    for (var i in next.params)
+                      nPath = path.replace(':' + i, next.params[i]);
+
+                    $location.path(nPath);
                 });
             }
         });
