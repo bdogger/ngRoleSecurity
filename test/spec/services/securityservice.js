@@ -48,7 +48,7 @@ describe('Service: $securityService', function () {
         securityConfig.authoritiesUrl = null;
         $securityService.getRemoteAuthorities();
 
-        expect($sessionStorage.authorities).toBeUndefined();
+        expect($sessionStorage.authorities).toBeNull();
     });
 
     it('expects getAuthorities() to return the authorities from localStorage', function () {

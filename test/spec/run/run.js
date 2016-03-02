@@ -2,15 +2,6 @@
 
 angular.module('testSecurityService', ['ngRoleSecurity', 'ngRoute',])
     .config(function ($routeProvider, securityConfig) {
-        $routeProvider
-            .when('/secured-admin', {
-                template: '<div>Admins Only</div>',
-                requiredRole: ['ADMIN']
-            })
-            .when('/unsecured', {
-                template: '<div>no security</div>'
-            });
-
         securityConfig.authoritiesUrl = 'http://localhost/me/authorities';
         securityConfig.forbiddenRoute = '/access-denied';
     });
@@ -41,7 +32,7 @@ describe('run: $locationChangeStart', function () {
         expect($location.path()).toBe('/unsecured');
     });
 
-    it('expects the route to change to permission denied when the user does not have required permission', function() {
+    it('expects the route to change to permission denied when the user does not have required permission', function () {
         $sessionStorage.authorities = [];
 
         $rootScope.$broadcast('$routeChangeStart', {originalPath: '/secured-admin', requiredRole: ['ADMIN']});
@@ -50,12 +41,26 @@ describe('run: $locationChangeStart', function () {
         expect($location.path()).toBe('/access-denied');
     });
 
-    it('expects the route to change to not change when the user does the required permission', function() {
+    it('expects the route to not change when the user has the required permission', function () {
         $sessionStorage.authorities = ['ADMIN'];
 
         $rootScope.$broadcast('$routeChangeStart', {originalPath: '/secured-admin', requiredRole: ['ADMIN']});
         $rootScope.$digest();
 
         expect($location.path()).toBe('/secured-admin');
+    });
+
+    it('expects the route to not change when the user has the required permission with route params', function () {
+        $sessionStorage.authorities = ['ADMIN'];
+
+        $rootScope.$broadcast('$routeChangeStart', {
+            originalPath: '/secured-admin/:param2/param/:param',// add path params that will ensure the replace is not too greedy
+            requiredRole: ['ADMIN'],
+            params: {param2: 'param2', param: 'param'},
+            pathParams: {param2: 'param2', param: 'param'},
+        });
+        $rootScope.$digest();
+
+        expect($location.path()).toBe('/secured-admin/param2/param/param');
     });
 });

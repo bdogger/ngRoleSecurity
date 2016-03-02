@@ -48,7 +48,7 @@ If you want to secure a route, add the following access restrictions:
         $routeProvider
         .when('/secured-admin', {
             template: '<div>Admins Only</div>',
-            allowedRoles: ['ADMIN']
+            requiredRole: ['ADMIN']
         })
         .when('/access-denied', {
             template: '<div>You do not have permission to view this</div>'
@@ -63,6 +63,8 @@ You do not need to secure all routes, as you can see above.
 If a user does not have the required role, then he or she will be redirected to the specified 403 route (securityConfig.forbiddenRoute).
 
 Currently, the module is configured so that the user the user will have access if he or she has any of the allowedRoles.
+
+Also, take note that requiredRole takes an array of role names, if the user has any of the roles, they will pass the authentication check.
 
 #Securing UI elements#
 You can hide elements by using the require-role directive

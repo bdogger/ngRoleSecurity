@@ -19,6 +19,10 @@ angular.module('ngRoleSecurity', ['ngRoute', 'ngStorage'])
                 var path = $securityService.hasPermission(next.requiredRole) ? next.originalPath : securityConfig.forbiddenRoute;
 
                 $rootScope.$evalAsync(function () {
+                    angular.forEach(next.pathParams, function(paramValue, pathParam) {
+                        path = path.replace(new RegExp(':' + pathParam + '(/|$)'), paramValue + '$1');
+                    });
+
                     $location.path(path);
                 });
             }
@@ -53,14 +57,19 @@ angular.module('ngRoleSecurity')
 
       return {
         getRemoteAuthorities: function (callBackFunction) {
-          return $http.get(securityConfig.authoritiesUrl)
-              .success(function (authorities) {
-                getStorage().authorities = authorities;
-                securityConfig.authorities = authorities;
-                if (callBackFunction) {
-                  callBackFunction();
-                }
-              });
+          if (securityConfig.authoritiesUrl) {
+              return $http.get(securityConfig.authoritiesUrl)
+                  .success(function (authorities) {
+                      getStorage().authorities = authorities;
+                      securityConfig.authorities = authorities;
+                      if (callBackFunction) {
+                          callBackFunction();
+                      }
+                  });
+          } else {
+              getStorage().authorities = null;
+              securityConfig.authorities = null;
+          }
         },
         getAuthorities: function () {
           var authorities = [];

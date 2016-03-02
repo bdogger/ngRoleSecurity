@@ -9,14 +9,19 @@ angular.module('ngRoleSecurity')
 
       return {
         getRemoteAuthorities: function (callBackFunction) {
-          return $http.get(securityConfig.authoritiesUrl)
-              .success(function (authorities) {
-                getStorage().authorities = authorities;
-                securityConfig.authorities = authorities;
-                if (callBackFunction) {
-                  callBackFunction();
-                }
-              });
+          if (securityConfig.authoritiesUrl) {
+              return $http.get(securityConfig.authoritiesUrl)
+                  .success(function (authorities) {
+                      getStorage().authorities = authorities;
+                      securityConfig.authorities = authorities;
+                      if (callBackFunction) {
+                          callBackFunction();
+                      }
+                  });
+          } else {
+              getStorage().authorities = null;
+              securityConfig.authorities = null;
+          }
         },
         getAuthorities: function () {
           var authorities = [];
